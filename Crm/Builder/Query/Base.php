@@ -9,7 +9,7 @@ use Crm\Database\DB;
 abstract class Base
 {
     protected string $table;
-    protected array $params;
+    protected array $params = [];
     protected string $fields;
     protected array $where;
     /**
@@ -65,6 +65,23 @@ abstract class Base
     public function whereOR($field, $operator = '=', $value = false)
     {
         return $this->where($field, $operator, $value, 'OR');
+    }
+
+    // SELECT * FROM table WHERE id IN (1,2,3,4);
+    public function whereIN($field, array $value = [])
+    {
+        $sql = " WHERE $field IN(";
+        foreach ($value as $item){
+            if (is_string($item)){
+                $sql .= "'" . $item . "', ";
+            }else{
+                $sql .= $item . ', ';
+            }
+        }
+        $sql = rtrim($sql, ', ') . ');';
+        $this->placeholders = rtrim($this->placeholders, ';') . $sql;
+
+        return $this;
     }
 
 
