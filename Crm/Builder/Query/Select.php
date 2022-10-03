@@ -25,12 +25,6 @@ class Select extends Base
     }
 
 
-    protected function generatedFullFields()
-    {
-
-    }
-
-
     public function join($table, $type = '', $reference = false, $field = false)
     {
         if ($reference and $field){
