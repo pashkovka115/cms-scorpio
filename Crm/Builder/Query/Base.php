@@ -67,7 +67,7 @@ abstract class Base
         return $this->where($field, $operator, $value, 'OR');
     }
 
-    // SELECT * FROM table WHERE id IN (1,2,3,4);
+
     public function whereIN($field, array $value = [])
     {
         $sql = " WHERE $field IN(";
