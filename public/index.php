@@ -7,7 +7,7 @@ use App\Http\Users;
 require $_SERVER['DOCUMENT_ROOT'] . '/bootstrap.php';
 
 
-
+\Crm\Route\Route::getInstance()->dispatch();
 
 
 
