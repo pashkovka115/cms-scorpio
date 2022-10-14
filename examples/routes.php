@@ -49,3 +49,18 @@ $route->namespace('mynamespace3', function () use ($route){
 
     });
 });
+
+$route->get('first/{two:[0-9]+}/free/{name:[a-z0-9]+}/', function ($two, $name){
+    echo __FILE__;
+    var_dump($two, $name);
+}, 'route.first.2');
+
+
+$route->get('first/{two:[0-9]+}/free/{name:[a-z0-9]+}/', [\App\Http\Controllers\Controller::class, 'index'], 'route.first.2');
+
+
+// получить ссылку для шаблона
+var_dump($route->name('name1', ['two' => 45, 'name' => 'sergey']));
+var_dump($route->name('name2', ['two' => 700, 'name' => 'vasya']));
+var_dump($route->name('route.first.3'));
+
