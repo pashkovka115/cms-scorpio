@@ -46,11 +46,26 @@ class Route
             $this->params = $split[1];
         }
 
+        /**
+         * Определение маршрутов
+         */
         require $_SERVER['DOCUMENT_ROOT'] . '/routes/__.php';
 
         echo '<pre>'; print_r($this->getRoutes()); echo '</pre>';
 
-
+        if (isset($this->routes[$_SERVER['REQUEST_METHOD']])){
+            foreach ($this->routes[$_SERVER['REQUEST_METHOD']] as $route){
+                if (is_array($route)){
+                    $pattern = trim(array_key_first($route['route']), '/');
+//                    var_dump($pattern, $this->path); die();
+                    if (preg_match('#'.$pattern.'#', $this->path, $matches)){
+                        $action = $route['route'][array_key_first($route['route'])];
+                        $this->executeAction($action);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
 
@@ -62,42 +77,66 @@ class Route
     }
 
 
-    public function post($route, $action)
+    public function post($route, $action, string $name = '')
     {
-        return $this->route('GET', $route, $action);
+        $this->route('GET', $route, $action, $name);
     }
 
 
-    public function get($route, $action)
+    public function get($route, $action, string $name = '')
     {
-        return $this->route('GET', $route, $action);
+        $this->route('GET', $route, $action, $name);
     }
 
 
-    public function any(array $methods, $route, $action)
+    public function any(array $methods, $route, $action, string $name = '')
     {
-        return $this->route($methods, $route, $action);
+        $this->route($methods, $route, $action, $name);
     }
 
 
-    public function route($method, $route, $action)
+    public function route($method, $route, $action, string $name = '')
     {
         $route = trim($route, '/ ');
         if (is_string($method)){
-            $this->routes[$method][implode('/', $this->tmpRoute) . '/' . $route] = $action;
+            $method = strtoupper($method);
+            $this->routes[$method][] = [
+                'route' => [implode('/', $this->tmpRoute) . '/' . $route => $action],
+                'name' => $name
+            ];
+
         }elseif (is_array($method)){
             foreach ($method as $item){
-                $this->routes[$item][implode('/', $this->tmpRoute) . '/' . $route] = $action;
+                $item = strtoupper($item);
+                $this->routes[$item][] = [
+                    'route' => [implode('/', $this->tmpRoute) . '/' . $route => $action],
+                    'name' => strtolower($item) . '.' .$name
+                ];
             }
         }
-
-        return $this;
     }
 
 
+    /**
+     * @param string $name
+     * @return false|int|string|null
+     * Возвращает ссылку по имени маршрута
+     * todo: доделать для параметров
+     */
     public function name(string $name)
     {
+        foreach ($this->routes as $methods){
+            if (is_array($methods)){
+                foreach ($methods as $route){
+                    if ($route['name'] == $name){
+                        return array_key_first($route['route']);
+                    }
+                }
+            }
 
+        }
+
+        return false;
     }
 
 
@@ -112,13 +151,15 @@ class Route
             $action(...$params);
         }elseif (is_array($action) and count($action) == 2){
             call_user_func_array($action, $params);
+        }else{
+            throw new \Exception('Не корректный метод вызова действия в маршруте');
         }
     }
 
 
     /**
      * @return string
-     * Текущее пространство имён
+     * Текущее пространство имён для URL
      */
     public function getNamespace()
     {
