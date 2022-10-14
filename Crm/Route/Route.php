@@ -48,9 +48,7 @@ class Route
 
         require $_SERVER['DOCUMENT_ROOT'] . '/routes/__.php';
 
-        /*if (isset($this->routes[$this->namespace])){
-
-        }*/
+        echo '<pre>'; print_r($this->getRoutes()); echo '</pre>';
 
 
     }
@@ -66,31 +64,40 @@ class Route
 
     public function post($route, $action)
     {
-        $this->route('GET', $route, $action);
+        return $this->route('GET', $route, $action);
     }
 
 
     public function get($route, $action)
     {
-        $this->route('GET', $route, $action);
+        return $this->route('GET', $route, $action);
     }
 
 
     public function any(array $methods, $route, $action)
     {
-        $this->route($methods, $route, $action);
+        return $this->route($methods, $route, $action);
     }
 
 
     public function route($method, $route, $action)
     {
+        $route = trim($route, '/ ');
         if (is_string($method)){
-            $this->routes[strtoupper($method)][implode('/', $this->tmpRoute) . '/' . $route] = $action;
+            $this->routes[$method][implode('/', $this->tmpRoute) . '/' . $route] = $action;
         }elseif (is_array($method)){
             foreach ($method as $item){
-                $this->routes[strtoupper($item)][implode('/', $this->tmpRoute) . '/' . $route] = $action;
+                $this->routes[$item][implode('/', $this->tmpRoute) . '/' . $route] = $action;
             }
         }
+
+        return $this;
+    }
+
+
+    public function name(string $name)
+    {
+
     }
 
 
