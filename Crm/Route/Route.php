@@ -197,11 +197,12 @@ class Route
 
 
     /**
-     * @param string $name
+     * @param string $name - имя маршрута ссылку на который надо вывести
+     * @param array $search - вырезать эти символы из результата
      * @return false|int|string|null
      * Возвращает ссылку по имени маршрута
      */
-    public function name(string $name, array $params = [])
+    public function name(string $name, array $params = [], array $search = [])
     {
         foreach ($this->routes as $methods) {
             if (is_array($methods)) {
@@ -218,7 +219,10 @@ class Route
                             );
                         }
 
-                        return $url_pattern; // link
+                        if ($search){
+                            return str_replace($search, '', $url_pattern);
+                        }
+                        return $url_pattern;
                     }
                 }
             }
