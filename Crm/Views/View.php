@@ -10,7 +10,13 @@ class View
     private static $path = '';
 
 
-    public static function template($template, array $params = [])
+    /**
+     * @param string $template путь к шаблону относительно установленного методом self::setPath()
+     * @param array $params параметры(переменные) для шаблона
+     * @return false|string
+     * Возвращает файл шаблона в виде строки
+     */
+    public static function template(string $template, array $params = [])
     {
         $template = str_replace('.', '/', $template);
         if (self::$path){
@@ -29,7 +35,8 @@ class View
 
     /**
      * @param string $path
-     * Установить главный путь к шаблонам
+     * Установить путь к директории с шаблонами.
+     * Папка со всеми шаблонами модуля относительно которой будут запрашиваться шаблоны методом self::template()
      */
     public static function setPath(string $path): void
     {
