@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http;
+namespace App\Admin;
 
 
 use Crm\Models\Model;

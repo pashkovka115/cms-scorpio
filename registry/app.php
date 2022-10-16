@@ -19,7 +19,7 @@ return [
             'password' => '123'
         ],
     ],
-    'default_view_path' => $_SERVER['DOCUMENT_ROOT'] . '/App/Http/Views'
+//    'admin_view_path' => $_SERVER['DOCUMENT_ROOT'] . '/App/Http/Views'
 
     // 'disk' => [],
     // '...' => '...'

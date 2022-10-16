@@ -10,5 +10,8 @@
 <body>
 <p>Two: <?= $two ?></p>
 <p>Name: <?= $name ?></p>
+<div>
+  <?= \Crm\Views\View::template('folder1.include_template') ?>
+</div>
 </body>
 </html>

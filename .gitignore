@@ -36,6 +36,7 @@ $RECYCLE.BIN/
 .LSOverride
 ._*
 _*
+!__*
 .Spotlight-V100
 .Trashes
 .AppleDB
