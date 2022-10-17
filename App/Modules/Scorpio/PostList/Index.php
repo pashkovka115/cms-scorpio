@@ -12,11 +12,13 @@ class Index
     }
 
 
-    public function start($params = false)
+    public function start()
     {
-        return View::template('default', [
+        return View::template('default');
+
+        /*return View::template('default', [
             'two' => 2,
             'name' => 'Vasya'
-        ]);
+        ]);*/
     }
 }

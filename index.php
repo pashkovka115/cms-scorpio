@@ -2,7 +2,7 @@
 $start = microtime(true);
 
 use Crm\Builder\Query\Query;
-use App\Http\Users;
+use App\Admin\Users;
 
 require $_SERVER['DOCUMENT_ROOT'] . '/bootstrap.php';
 
@@ -10,7 +10,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/bootstrap.php';
 \Crm\Route\Route::getInstance()->dispatch();
 
 
-
+echo __FILE__;
 
 
 $end = microtime(true);

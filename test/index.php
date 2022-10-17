@@ -15,6 +15,9 @@ require $_SERVER['DOCUMENT_ROOT'] . '/bootstrap.php';
     <title>Список постов на странице сайта</title>
 </head>
 <body>
-<?php \Crm\Modules::includeModule(Index::class, []); ?>
+<?php
+echo __FILE__;
+//\Crm\Modules::includeModule(Index::class, []);
+?>
 </body>
 </html>

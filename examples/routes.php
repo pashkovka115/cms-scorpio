@@ -56,12 +56,12 @@ $route->get('first/{two:[0-9]+}/free/{name:[a-z0-9]+}/', function ($two, $name){
 }, 'route.first.2');
 
 
-$route->get('first/{two:[0-9]+}/free/{name:[a-z0-9]+}/', [\App\Http\Controllers\Controller::class, 'index'], 'route.first.2');
+$route->get('first/{two:[0-9]+}/free/{name:[a-z0-9]+}/', [\App\Admin\Controllers\MigrationController::class, 'index'], 'route.first.2');
 
 // Необязательный параметр "two". После слеша тоже необходимо ставить "*".
 $route->get(
     'first/{two:[0-9]*}/*free/{name:[a-z0-9]+}/',
-    [\App\Http\Controllers\Controller::class, 'index'],
+    [\App\Admin\Controllers\MigrationController::class, 'index'],
     'route.first.222'
 );
 
@@ -69,4 +69,14 @@ $route->get(
 var_dump($route->name('name1', ['two' => 45, 'name' => 'sergey']));
 var_dump($route->name('name2', ['two' => 700, 'name' => 'vasya']));
 var_dump($route->name('route.first.3'));
+
+$route->namespace('test2', function () use ($route){
+    $route->get('', function (){
+        // вызов модуля в маршруте
+        \Crm\Modules::includeModule(\App\Modules\Scorpio\PostList\Index::class);
+    });
+
+    // вызов контролера с параметрами внутри которого подключается модуль (обычный вызов)
+    $route->get('{two:[a-z0-9]+}/{name:[a-z0-9]+}', [\App\Admin\Controllers\MigrationController::class, 'index']);
+});
 
