@@ -4,6 +4,7 @@ namespace App\Modules\Scorpio\Admin\Users;
 
 use Crm\Route\Route;
 use Crm\Views\View;
+use App\Modules\Scorpio\Admin\Users\Models\User;
 
 /**
  * Class Index
@@ -31,9 +32,24 @@ class Index
     {
         if (isset($params['action']) and $params['action'] == 'create') {
             return $this->create();
+        }elseif (isset($params['action']) and $params['action'] == 'store') {
+            if (isset($params['request'])){
+                return $this->store($params['request']);
+            }else{
+                throw new \Exception('Не передан "request" ' . __METHOD__);
+            }
         }
 
         return '';
+    }
+
+
+    protected function store($request)
+    {
+        $user = new User($request, ['save']);
+        $user->save();
+
+        redirect(Route::getInstance()->name('scorpio.users.create'));
     }
 
 
@@ -43,10 +59,16 @@ class Index
     }
 
 
+    /**
+     * @param Route $route
+     * @param $controller
+     * Маршруты для модуля
+     */
     public static function getRoutes(Route $route, $controller)
     {
         $route->namespace('users', function () use ($route, $controller){
             $route->get('create', [$controller, 'create'], 'scorpio.users.create');
+            $route->post('store', [$controller, 'store'], 'scorpio.users.store');
         });
     }
 }

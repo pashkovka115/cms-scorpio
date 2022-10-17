@@ -1,4 +1,8 @@
 <?php
+function redirect($url){
+    header('Location: ' . $url);
+    exit();
+}
 function d(...$data)
 {
     echo '<pre>';

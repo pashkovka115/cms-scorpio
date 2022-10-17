@@ -77,8 +77,11 @@ class Route
                                 $params[$key] = $match;
                             }
                         }
+                        if ($_SERVER['REQUEST_METHOD'] == 'POST' and count($_POST) > 0){
+                            $params = array_merge($params, $_POST);
+                        }
                         $action = $route['route'][array_key_first($route['route'])];
-                        $this->executeAction($action, $params);
+                        $this->executeAction($action, [$params]); // todo: масив [$params] переделать в Response object
                         break;
                     }
                 }
@@ -138,7 +141,7 @@ class Route
      */
     public function post($route, $action, string $name = '')
     {
-        $this->route('GET', $route, $action, $name);
+        $this->route('POST', $route, $action, $name);
     }
 
 
@@ -222,7 +225,7 @@ class Route
                         if ($search){
                             return str_replace($search, '', $url_pattern);
                         }
-                        return $url_pattern;
+                        return '/' . ltrim($url_pattern, '/');
                     }
                 }
             }

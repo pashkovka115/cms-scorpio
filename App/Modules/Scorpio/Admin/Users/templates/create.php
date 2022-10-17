@@ -1,4 +1,5 @@
-<form class="row g-5">
+<?php $route = \Crm\Route\Route::getInstance(); ?>
+<form class="row g-5" action="<?= $route->name('scorpio.users.store') ?>" method="post">
   <div class="col-auto">
     <label for="name" class="col-sm-3 col-form-label">Имя</label>
     <input type="text" class="form-control" name="name" id="name">

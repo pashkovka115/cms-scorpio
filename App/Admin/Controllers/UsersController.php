@@ -6,6 +6,7 @@ namespace App\Admin\Controllers;
 
 use App\Modules\Scorpio\Admin\Users\Index as User;
 use Crm\Modules;
+use Crm\Route\Route;
 use Crm\Views\View;
 
 class UsersController extends Controller
@@ -33,8 +34,10 @@ class UsersController extends Controller
      * Сохраните вновь созданный ресурс в хранилище.
      */
     public function store($request)
-    {
-        //
+    {  // todo: доделать
+//        d(Route::getInstance()->getRoutes());
+//        dd($request);
+        Modules::includeModule(User::class, ['action' => 'store', 'request' => $request]);
     }
 
     /**

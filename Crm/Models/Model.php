@@ -3,12 +3,39 @@
 namespace Crm\Models;
 
 
+use Crm\Builder\Query\Insert;
 use Crm\Collections\Collections;
 use Crm\Builder\Query\Query;
 
 class Model
 {
     public static $table;
+
+
+    public function __construct(array $data = [], array $black_list = [])
+    {
+        foreach ($data as $field => $value){
+            if (is_string($field) and !in_array($field, $black_list)){
+                $this->$field = $value;
+            }
+        }
+    }
+
+
+    public function save(array $data = [], array $black_list = [])
+    {
+        if (!$data){
+            foreach ($this as $field => $value){
+                if (!in_array($field, $black_list)){
+                    $data[$field] = $value;
+                }
+            }
+        }
+
+        $insert = new Insert(static::$table, $data);
+
+        return $insert->exec();
+    }
 
 
     public static function find($id, $field = 'id', $collections = false, $mode = \PDO::FETCH_ASSOC)
