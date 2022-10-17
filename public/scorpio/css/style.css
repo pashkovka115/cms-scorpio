@@ -1,0 +1,44 @@
+/* #08A652 */
+:root{
+    --main: #006633;
+    --secondary: #336666;
+    --grey: #dddddd;
+    --black: #000000;
+    --white: #ffffff;
+}
+.background-main{
+    background-color: var(--main);
+}
+/* убираем горизонтальную прокрутку от bootstrap */
+html{
+    width: 100%;
+    overflow-x: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding-right: 0;
+}
+body{
+    margin: 0;
+}
+.container-fluid{
+    min-height: 100vh;
+}
+.sidebar,
+.top-panel,
+.content{
+    padding: 10px 8px;
+}
+.content,
+.sidebar,
+.top-panel{
+    color: var(--white);
+}
+
+.sidebar{
+    background-color: var(--main);
+}
+.content{
+    background-color: var(--secondary);
+    border-top-left-radius: 5px;
+}

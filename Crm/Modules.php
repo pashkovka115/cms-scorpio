@@ -20,7 +20,7 @@ class Modules
                 if (method_exists($class, 'start')){
                     $result = (new $class)->start($params);
                     if (is_string($result)){
-                        echo $result;
+                        return $result;
                     }else{
                         throw new \Exception('Модуль должен возвращать строку, а вернул "' . gettype($result) . '"');
                     }
@@ -30,7 +30,5 @@ class Modules
             }else{
                 throw new \Exception('У модуля должен быть класс "Index"');
             }
-
-        return false;
     }
 }

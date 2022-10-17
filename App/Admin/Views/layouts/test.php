@@ -1,1 +1,0 @@
-<p><?= 'string test' ?></p>

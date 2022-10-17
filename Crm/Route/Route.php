@@ -250,4 +250,18 @@ class Route
     {
         return $this->routes;
     }
+
+
+    /**
+     * @return false|string[]
+     * GET параметры
+     */
+    public function getParams()
+    {
+        if ($this->params){
+            return explode('&', $this->params);
+        }
+
+        return false;
+    }
 }

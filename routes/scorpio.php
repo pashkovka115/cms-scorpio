@@ -3,9 +3,5 @@
 /** @var Crm\Route\Route $route */
 
 $route->namespace('scorpio', function () use ($route) {
-    $route->namespace('migrations', function () use ($route){
-
-        $route->get('create', [\App\Admin\Controllers\MigrationController::class, 'create'], 'migrations.create');
-
-    });
+    \App\Modules\Scorpio\Admin\Users\Index::getRoutes($route, \App\Admin\Controllers\UsersController::class);
 });

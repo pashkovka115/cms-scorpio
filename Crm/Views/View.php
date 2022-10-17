@@ -7,18 +7,18 @@ namespace Crm\Views;
 class View
 {
     /** @var string $path главный путь к шаблонам */
-    private static $path = '';
+    private $path = '';
 
     /** @var string $pathLayouts путь к общим шаблонам */
-    private static $pathLayouts = '';
+    private $pathLayouts = '';
 
 
-    protected static function getLayout($layout)
+    protected function getLayout($layout)
     {
         ob_start();
         $layout = str_replace('.', '/', $layout);
-        if (self::$pathLayouts){
-            $layout = rtrim(self::$pathLayouts, '/') . '/' . ltrim($layout, '/');
+        if ($this->pathLayouts){
+            $layout = rtrim($this->pathLayouts, '/') . '/' . ltrim($layout, '/');
         }
 
         require_once $layout . '.php';
@@ -34,48 +34,44 @@ class View
      * @return false|string
      * Возвращает файл шаблона в виде строки
      */
-    public static function template(string $template, array $params = [], $current_dir = false)
+    public function template(string $template, array $params = [], $current_dir = false)
     {
         if ($current_dir){
-            self::$path = $current_dir;
+            $this->path = $current_dir;
         }
         $extends_pattern = '#\@extends\(\s?([a-z]+),\s?([a-z]+)\s?\)#';
 
         $template = str_replace('.', '/', $template);
-        if (self::$path){
-            $template = rtrim(self::$path, '/') . '/' . ltrim($template, '/');
+        if ($this->path){
+            $template = rtrim($this->path, '/') . '/' . ltrim($template, '/');
         }
-        $template = $template . '.php';
-
+//        $template = str_replace('//', '/', $template) . '.php';
+//            var_dump($template . '.php');
         ob_start();
 
         extract($params);
-        require $template;
+        require $template . '.php';
 
         $tmp = ob_get_clean();
 
         if (stripos($tmp, '@extends(') !== false){
             preg_match($extends_pattern, $tmp, $matches);
-//            var_dump($matches, $tmp);
+
             if (isset($matches[1])){
                 $layout_name = $matches[1];
                 $layout = self::getLayout($layout_name);
-//                var_dump($layout);
             }
             if (isset($matches[2])){
                 $section_name = $matches[2];
             }
         }
-//        var_dump($layout, $section_name, stripos($layout, '@section(' . $section_name . ')'));
+
         if (isset($layout) and isset($section_name)){
             if (stripos($layout, '@section(' . $section_name . ')') !== false){
                 $tmp = preg_replace($extends_pattern, '', $tmp);
                 $tmp = str_replace('@section(' . $section_name . ')', $tmp, $layout);
             }
         }
-//        var_dump($tmp);
-
-
 
         return $tmp;
     }
@@ -86,26 +82,32 @@ class View
      * Установить путь к директории с шаблонами.
      * Папка со всеми шаблонами модуля относительно которой будут запрашиваться шаблоны методом self::template()
      */
-    public static function setPath(string $path): void
+    public function setPath(string $path): void
     {
-        self::$path = $path;
+        $this->path = $path;
+    }
+
+
+    public function getPath()
+    {
+        return $this->path;
     }
 
     /**
      * @param string $pathLayouts
      * Папка с общими шаблонами
      */
-    public static function setPathLayouts(string $pathLayouts): void
+    public function setPathLayouts(string $pathLayouts): void
     {
-        self::$pathLayouts = $pathLayouts;
+        $this->pathLayouts = $pathLayouts;
     }
 
 
     /**
      * @return string
      */
-    public static function getPathLayouts(): string
+    public function getPathLayouts(): string
     {
-        return self::$pathLayouts;
+        return $this->pathLayouts;
     }
 }

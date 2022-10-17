@@ -56,12 +56,12 @@ $route->get('first/{two:[0-9]+}/free/{name:[a-z0-9]+}/', function ($two, $name){
 }, 'route.first.2');
 
 
-$route->get('first/{two:[0-9]+}/free/{name:[a-z0-9]+}/', [\App\Admin\Controllers\MigrationController::class, 'index'], 'route.first.2');
+$route->get('first/{two:[0-9]+}/free/{name:[a-z0-9]+}/', [\App\Admin\Controllers\UsersController::class, 'index'], 'route.first.2');
 
 // Необязательный параметр "two". После слеша тоже необходимо ставить "*".
 $route->get(
     'first/{two:[0-9]*}/*free/{name:[a-z0-9]+}/',
-    [\App\Admin\Controllers\MigrationController::class, 'index'],
+    [\App\Admin\Controllers\UsersController::class, 'index'],
     'route.first.222'
 );
 
@@ -77,6 +77,6 @@ $route->namespace('test2', function () use ($route){
     });
 
     // вызов контролера с параметрами внутри которого подключается модуль (обычный вызов)
-    $route->get('{two:[a-z0-9]+}/{name:[a-z0-9]+}', [\App\Admin\Controllers\MigrationController::class, 'index']);
+    $route->get('{two:[a-z0-9]+}/{name:[a-z0-9]+}', [\App\Admin\Controllers\UsersController::class, 'index']);
 });
 

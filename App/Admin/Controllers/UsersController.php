@@ -4,11 +4,11 @@
 namespace App\Admin\Controllers;
 
 
-use App\Modules\Scorpio\PostList\Index;
+use App\Modules\Scorpio\Admin\Users\Index as User;
 use Crm\Modules;
 use Crm\Views\View;
 
-class MigrationController extends Controller
+class UsersController extends Controller
 {
     public function index($two, $name)
     {
@@ -24,7 +24,9 @@ class MigrationController extends Controller
      */
     public function create()
     {
-        Modules::includeModule(\App\Modules\Scorpio\Admin\Migrations\Index::class, ['action' => 'create']);
+        $module_template = Modules::includeModule(User::class, ['action' => 'create']);
+
+        echo $this->view->template('users.create', ['module_template' => $module_template]);
     }
 
     /**
