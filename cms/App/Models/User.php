@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Scorpio\Admin\Users\Models;
+namespace App\Models;
 
 
 use Crm\Models\Model;

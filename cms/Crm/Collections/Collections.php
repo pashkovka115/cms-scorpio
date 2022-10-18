@@ -24,11 +24,18 @@ class Collections
     public function keyAsFild($field)
     {
         $tmp = [];
-        foreach ($this->data as $item){
-            if (isset($item[$field])){
-                $tmp[$item[$field]] = $item;
+        if (is_array($this->data[array_key_first($this->data)])){
+            foreach ($this->data as $item){
+                if (isset($item[$field])){
+                    $tmp[$item[$field]] = $item;
+                }
+            }
+        }else{
+            if (isset($this->data[$field])){
+                $tmp[$this->data[$field]] = $this->data;
             }
         }
+
         $this->data = $tmp;
         unset($tmp);
 
@@ -40,6 +47,7 @@ class Collections
      * @param $key
      * @return $this
      * Сортирует многомерный масив по ключу
+     * todo: перепроверить работу
      */
     public function sortBy($key, $reverse = false)
     {
@@ -52,6 +60,16 @@ class Collections
                     return ($a[$key] > $b[$key]) ? -1 : 1;
                 }
                 return ($a[$key] > $b[$key]) ? 1 : -1;
+            });
+        }else{
+            uasort($this->data, function ($a, $b) use ($key, $reverse){
+                if($this->data[$key] == $this->data[$key]) {
+                    return 0;
+                }
+                if ($reverse){
+                    return ($this->data[$key] > $this->data[$key]) ? -1 : 1;
+                }
+                return ($this->data[$key] > $this->data[$key]) ? 1 : -1;
             });
         }
 
@@ -82,6 +100,7 @@ class Collections
 
     /**
      * @return array
+     * Получить результат
      */
     public function get(): array
     {

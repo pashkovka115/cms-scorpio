@@ -6,18 +6,14 @@ namespace App\Admin\Controllers;
 
 use App\Modules\Scorpio\Admin\Users\Index as User;
 use Crm\Modules;
-use Crm\Route\Route;
-use Crm\Views\View;
 
 class UsersController extends Controller
 {
-    public function index($two, $name)
+    public function index()
     {
-        /*echo View::template('my.test', [
-            'two' => $two,
-            'name' => $name
-        ]);*/
+        $module_template = Modules::includeModule(User::class, ['action' => 'index']);
 
+        echo $this->view->template('users.index', ['module_template' => $module_template]);
     }
 
     /**
@@ -34,18 +30,8 @@ class UsersController extends Controller
      * Сохраните вновь созданный ресурс в хранилище.
      */
     public function store($request)
-    {  // todo: доделать
-//        d(Route::getInstance()->getRoutes());
-//        dd($request);
-        Modules::includeModule(User::class, ['action' => 'store', 'request' => $request]);
-    }
-
-    /**
-     * Показать указанный ресурс.
-     */
-    public function show($id)
     {
-        //
+        Modules::includeModule(User::class, ['action' => 'store', 'request' => $request]);
     }
 
     /**
@@ -53,15 +39,17 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        //
+        $module_template = Modules::includeModule(User::class, ['id' => $id, 'action' => 'edit']);
+
+        echo $this->view->template('users.edit', ['module_template' => $module_template]);
     }
 
     /**
      * Обновить указанный ресурс в хранилище.
      */
-    public function update($request, $id)
+    public function update($id, $request)
     {
-        //
+        Modules::includeModule(User::class, ['action' => 'update', 'id' => $id, 'request' => $request]);
     }
 
     /**
@@ -69,6 +57,6 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Modules::includeModule(User::class, ['action' => 'destroy', 'id' => $id]);
     }
 }

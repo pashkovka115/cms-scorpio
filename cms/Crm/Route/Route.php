@@ -47,8 +47,8 @@ class Route
     {
         $split = explode('?', trim($_SERVER['REQUEST_URI'], '/'));
         if (isset($split[0])) {
-            $this->path = $split[0];
-            $parts = explode('/', $split[0]);
+            $this->path = trim($split[0], '/');
+            $parts = explode('/', trim($split[0], '/'));
             if (isset($parts[0])) {
                 $this->namespace = $parts[0];
             }
@@ -65,27 +65,37 @@ class Route
          */
         require base_path() . '/routes/__.php';
 
+        $error_404 = false;
         if (isset($this->routes[$_SERVER['REQUEST_METHOD']])) {
             foreach ($this->routes[$_SERVER['REQUEST_METHOD']] as $route) {
                 if (is_array($route)) {
                     $pattern = $this->getPattern($route['route']);
 
                     if (preg_match('#^' . $pattern . '$#', $this->path, $matches)) {
-                        $params = [];
+                        $query_string_params = [];
                         foreach ($matches as $key => $match) {
                             if (is_string($key)) {
-                                $params[$key] = $match;
+                                $query_string_params[$key] = $match;
                             }
                         }
-                        if ($_SERVER['REQUEST_METHOD'] == 'POST' and count($_POST) > 0){
-                            $params = array_merge($params, $_POST);
-                        }
+
                         $action = $route['route'][array_key_first($route['route'])];
-                        $this->executeAction($action, [$params]); // todo: масив [$params] переделать в Request object
+                        $this->executeAction($action, $query_string_params);
+                        $error_404 = false;
                         break;
+                    } else {
+                        $error_404 = true;
                     }
+                } else {
+                    $error_404 = true;
                 }
             }
+        } else {
+            $error_404 = true;
+        }
+
+        if ($error_404) {
+            status_code(404);
         }
     }
 
@@ -113,6 +123,9 @@ class Route
      */
     protected function executeAction($action, array $params = [])
     {
+        $request = Request::getInstance();
+        $params = array_merge($params, ['request' => $request]);
+
         if (is_array($action) and count($action) == 2) {
             $class = $action[0];
             $method = $action[1];
@@ -222,7 +235,7 @@ class Route
                             );
                         }
 
-                        if ($search){
+                        if ($search) {
                             return str_replace($search, '', $url_pattern);
                         }
                         return '/' . ltrim($url_pattern, '/');
@@ -261,7 +274,7 @@ class Route
      */
     public function getParams()
     {
-        if ($this->params){
+        if ($this->params) {
             return explode('&', $this->params);
         }
 

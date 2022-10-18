@@ -3,9 +3,11 @@
 namespace Crm\Models;
 
 
+use Crm\Builder\Query\Delete;
 use Crm\Builder\Query\Insert;
-use Crm\Collections\Collections;
 use Crm\Builder\Query\Query;
+use Crm\Builder\Query\Update;
+use Crm\Collections\Collections;
 
 class Model
 {
@@ -35,6 +37,22 @@ class Model
         $insert = new Insert(static::$table, $data);
 
         return $insert->exec();
+    }
+
+
+    public static function destroy($id, $field = 'id')
+    {
+        $delete = new Delete(static::$table);
+
+        return $delete->where($field, '=', $id)->exec();
+    }
+
+
+    public static function update($id, array $data, $field = 'id')
+    {
+        $update = new Update(static::$table, $data);
+
+        return $update->where($field, '=', $id)->exec();
     }
 
 

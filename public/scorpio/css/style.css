@@ -1,6 +1,6 @@
 :root{
-    --main: #006633;
-    --secondary: #336666;
+    --main: #06365a;
+    --secondary: #e8f4f4;
     --grey: #dddddd;
     --black: #000000;
     --white: #ffffff;
@@ -29,7 +29,7 @@ body{
 .content{
     padding: 10px 8px;
 }
-.content,
+/*.content,*/
 .sidebar,
 .top-panel{
     color: var(--white);
