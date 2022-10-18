@@ -4,7 +4,7 @@ use CRM\Builder\Column;
 use Crm\Builder\Table;
 use Crm\Database\DB;
 
-require $_SERVER['DOCUMENT_ROOT'] . '/bootstrap.php';
+require base_path() . '/bootstrap.php';
 
 
 

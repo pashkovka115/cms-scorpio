@@ -3,7 +3,7 @@
 //use Crm\Builder\Query\Insert;
 use Crm\Builder\Query\Query;
 
-require $_SERVER['DOCUMENT_ROOT'] . '/bootstrap.php';
+require base_path() . '/bootstrap.php';
 
 
 Query::delete('users')

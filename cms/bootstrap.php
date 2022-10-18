@@ -1,6 +1,6 @@
 <?php
 
-require $_SERVER['DOCUMENT_ROOT'] . '/utils/functions.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/cms/utils/functions.php';
 
 spl_autoload_register(function($class){
     $class = str_replace('\\', '/', $class);

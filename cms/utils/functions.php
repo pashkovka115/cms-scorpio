@@ -23,7 +23,7 @@ function dd(...$data)
 
 function base_path()
 {
-    return $_SERVER['DOCUMENT_ROOT'];
+    return $_SERVER['DOCUMENT_ROOT'] . '/cms';
 }
 
 function base_url()

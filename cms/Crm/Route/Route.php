@@ -63,7 +63,7 @@ class Route
         /**
          * Определение маршрутов
          */
-        require $_SERVER['DOCUMENT_ROOT'] . '/routes/__.php';
+        require base_path() . '/routes/__.php';
 
         if (isset($this->routes[$_SERVER['REQUEST_METHOD']])) {
             foreach ($this->routes[$_SERVER['REQUEST_METHOD']] as $route) {

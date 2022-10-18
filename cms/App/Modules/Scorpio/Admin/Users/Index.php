@@ -20,7 +20,7 @@ class Index
     {
         $this->view = new View();
 
-        $this->view->setPath($_SERVER['DOCUMENT_ROOT'] . '/App/Modules/Scorpio/Admin/Users/templates');
+        $this->view->setPath(base_path() . '/App/Modules/Scorpio/Admin/Users/templates');
     }
 
 
