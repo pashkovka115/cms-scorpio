@@ -81,7 +81,7 @@ class Route
                             $params = array_merge($params, $_POST);
                         }
                         $action = $route['route'][array_key_first($route['route'])];
-                        $this->executeAction($action, [$params]); // todo: масив [$params] переделать в Response object
+                        $this->executeAction($action, [$params]); // todo: масив [$params] переделать в Request object
                         break;
                     }
                 }

@@ -45,8 +45,7 @@ class View
         if ($this->path){
             $template = rtrim($this->path, '/') . '/' . ltrim($template, '/');
         }
-//        $template = str_replace('//', '/', $template) . '.php';
-//            var_dump($template . '.php');
+
         ob_start();
 
         extract($params);

@@ -34,7 +34,7 @@ class Index
             return $this->create();
         }elseif (isset($params['action']) and $params['action'] == 'store') {
             if (isset($params['request'])){
-                return $this->store($params['request']);
+                $this->store($params['request']);
             }else{
                 throw new \Exception('Не передан "request" ' . __METHOD__);
             }
