@@ -1,0 +1,25 @@
+<?php
+
+use CRM\Builder\Column;
+use Crm\Builder\Table;
+
+
+class {{migrate_name}} {
+    public function up()
+    {
+        $table = new Table();
+
+        $table->create({{table_name}}, function (Column $column) {
+            $column->id();
+            // ...
+        });
+    }
+
+
+    public function down()
+    {
+        $table = new Table();
+        // $table->...
+        // $table->exec();
+    }
+}

@@ -46,6 +46,12 @@ class Table
     }
 
 
+    public function exec()
+    {
+        $this->db->exec($this->getSql());
+    }
+
+
     public function getSql()
     {
         return $this->sql;
@@ -71,7 +77,7 @@ class Table
 
     public function dropTable(string $name)
     {
-        $this->sql = 'DROP TABLE ' . $name . ';';
+        $this->sql = 'DROP TABLE IF EXISTS ' . $name . ';';
     }
 
 

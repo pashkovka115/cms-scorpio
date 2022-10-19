@@ -15,7 +15,7 @@ class Column{
         return $this;
     }
 
-    public function string(string $name, int $length = 32)
+    public function string(string $name, int $length = 255)
     {
         $sql = "\n$name VARCHAR($length) NOT NULL,";
         $this->sql .= $sql;
@@ -126,6 +126,16 @@ class Column{
     {
         $sp = explode(',', $this->getSql());
         $sp[count($sp) - 1] = str_replace('NOT NULL', 'UNIQUE NOT NULL', $sp[count($sp) - 1]);
+        $this->sql = implode(',', $sp) . ',';
+
+        return $this;
+    }
+
+// UNSIGNED
+    public function unsigned()
+    {
+        $sp = explode(',', $this->getSql());
+        $sp[count($sp) - 1] = str_replace('NOT NULL', 'UNSIGNED NOT NULL', $sp[count($sp) - 1]);
         $this->sql = implode(',', $sp) . ',';
 
         return $this;
