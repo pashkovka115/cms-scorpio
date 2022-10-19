@@ -1,9 +1,10 @@
 <?php
 
 
-namespace App\Admin\Controllers;
+namespace App\Admin\Controllers\DB;
 
 
+use App\Admin\Controllers\Controller;
 use Crm\FileSystem\File;
 use Crm\Route\Request;
 use Crm\Route\Route;
