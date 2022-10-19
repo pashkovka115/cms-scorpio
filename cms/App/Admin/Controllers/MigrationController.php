@@ -94,7 +94,9 @@ class MigrationController extends Controller
 
     public function upAll()
     {
-        foreach ($this->file->listDir('*__*') as $file_name){
+        $files = $this->file->listDir('*__*');
+
+        foreach ($files as $file_name){
             if ($file_name and ($class = $this->getMigrationClass($file_name))) {
                 (new $class())->up();
             }
@@ -119,7 +121,9 @@ class MigrationController extends Controller
 
     public function downAll()
     {
-        foreach ($this->file->listDir('*__*') as $file_name){
+        $files = array_reverse($this->file->listDir('*__*'));
+
+        foreach ($files as $file_name){
             if ($file_name and ($class = $this->getMigrationClass($file_name))) {
                 (new $class())->down();
             }
