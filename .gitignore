@@ -52,6 +52,7 @@ bower_components
 package-lock.json
 *.txt
 *.log
+/seeder.php
 
 #composer venor files
 /vendor/

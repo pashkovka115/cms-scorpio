@@ -90,8 +90,6 @@ class Table
         $sql .= "\nFOREIGN KEY ($foreign_field)  REFERENCES $references_table ($references_field)";
 
         $this->sql = 'ALTER TABLE ' . $foreign_table . " \nADD " . $sql . ";";
-
-        dd($this->sql);
     }
 
     public function dropForeignKey(string $foreign_table, string $foreign_field, string $references_table, string $references_field)

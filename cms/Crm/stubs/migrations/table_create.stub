@@ -1,6 +1,6 @@
 <?php
 
-use CRM\Builder\Column;
+use Crm\Builder\Column;
 use Crm\Builder\Table;
 
 

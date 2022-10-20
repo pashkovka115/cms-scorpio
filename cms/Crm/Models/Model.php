@@ -12,6 +12,7 @@ use Crm\Collections\Collections;
 class Model
 {
     public static $table;
+//    public static array $references = [];
 
 
     public function __construct(array $data = [], array $black_list = [])
@@ -37,6 +38,39 @@ class Model
         $insert = new Insert(static::$table, $data);
 
         return $insert->exec();
+    }
+
+
+    /**
+     * @param $related - Зависящая модель
+     * @param $this_field - Поле этой модели
+     * @param $to_field - Ссылается на это поле
+     * @param string[] $fields - выбрать только эти поля
+     * @return array
+     * Преобразовать вывод https://www.php.net/manual/ru/pdostatement.fetch.php
+     * int $mode = PDO::FETCH_DEFAULT
+     */
+    protected static function hasMany($related, $this_field, $to_field, $fields = ['*'], $mode = null)
+    {
+        $static_table = static::$table;
+        $related_table = $related::$table;
+
+        $this_item = Query::select($static_table)->query()->fetch(\PDO::FETCH_ASSOC);
+        $res = Query::select($related_table, $fields)->where($to_field, '=', $this_item[$this_field])->query();
+
+        return $res->fetchAll($mode);
+    }
+
+
+    protected static function hasOne($related, $this_field, $to_field, $fields = ['*'], $mode = null)
+    {
+        $static_table = static::$table;
+        $related_table = $related::$table;
+
+        $this_item = Query::select($static_table)->query()->fetch(\PDO::FETCH_ASSOC);
+        $res = Query::select($related_table, $fields)->where($to_field, '=', $this_item[$this_field])->query();
+
+        return $res->fetch($mode);
     }
 
 
