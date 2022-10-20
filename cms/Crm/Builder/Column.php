@@ -62,7 +62,7 @@ class Column{
 
     public function integer(string $name, int $length = 11)
     {
-        $sql = "\n$name INTEGER($length) NOT NULL,";
+        $sql = "\n$name INT($length) NOT NULL,";
         $this->sql .= $sql;
 
         return $this;
@@ -101,14 +101,25 @@ class Column{
     }
 
 
+    public function foreignKey(string $foreign_table, string $foreign_field, string $references_table, string $references_field)
+    {
+        $sql = '';
+        $constraint = $foreign_table . '_' . $foreign_field . '_' . $references_table . '_' . $references_field . '_fk';
+        $sql .= "\nCONSTRAINT $constraint";
+        $sql .= "\nFOREIGN KEY ($foreign_field)  REFERENCES $references_table ($references_field), ";
+        $this->sql .= $sql;
+
+        return $this;
+    }
+
+
 /* ========================================================== */
     protected function getSql()
     {
-        return rtrim($this->sql, ', '); // PRIMARY KEY ($this->id_name)
+        return rtrim($this->sql, ', ');
     }
 
     public function getColumns(){
-        // return $this->getSql() . ", PRIMARY KEY ({$this->id_name})";
         return $this->getSql();
     }
 
@@ -131,7 +142,7 @@ class Column{
         return $this;
     }
 
-// UNSIGNED
+
     public function unsigned()
     {
         $sp = explode(',', $this->getSql());
@@ -141,11 +152,3 @@ class Column{
         return $this;
     }
 }
-
-
-/*
-CREATE TABLE `test`.`users` ( 
-    `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT , 
-    `name` VARCHAR(255) NOT NULL , PRIMARY KEY (`id`)
-    ) ENGINE = InnoDB;
-*/

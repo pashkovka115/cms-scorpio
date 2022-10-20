@@ -23,7 +23,7 @@ class Table
     }
 
 
-    public function create(string $name, callable $func, string $engine = 'InnoDB', $collate = 'DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci')
+    public function create(string $name, callable $func, $debug = false, string $engine = 'InnoDB', $collate = 'DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci')
     {
         $this->table_name = $name;
         $this->before_sql .= $name . ' (';
@@ -37,6 +37,9 @@ class Table
             . $collate . ';';
 
         try {
+            if ($debug){
+                return $this->getSql();
+            }
             $this->db->exec($this->getSql());
         }catch (PDOException $exception){
             return $this->error = 'Ошибка! ' . $exception->getMessage() . ' Ошибка! ';
@@ -48,7 +51,12 @@ class Table
 
     public function exec()
     {
-        $this->db->exec($this->getSql());
+
+        try {
+            $this->db->exec($this->getSql());
+        }catch (\Exception $e){
+            writeLog($e->getMessage());
+        }
     }
 
 
@@ -72,6 +80,26 @@ class Table
     public function dropColumn(string $table_name, string $column_name)
     {
         $this->sql = 'ALTER TABLE ' . $table_name . " \nDROP COLUMN " . $column_name;
+    }
+
+    public function addForeignKey(string $foreign_table, string $foreign_field, string $references_table, string $references_field)
+    {
+        $sql = '';
+        $constraint = $foreign_table . '_' . $foreign_field . '_' . $references_table . '_' . $references_field . '_fk';
+        $sql .= "\nCONSTRAINT $constraint";
+        $sql .= "\nFOREIGN KEY ($foreign_field)  REFERENCES $references_table ($references_field)";
+
+        $this->sql = 'ALTER TABLE ' . $foreign_table . " \nADD " . $sql . ";";
+
+        dd($this->sql);
+    }
+
+    public function dropForeignKey(string $foreign_table, string $foreign_field, string $references_table, string $references_field)
+    {
+        $constraint = $foreign_table . '_' . $foreign_field . '_' . $references_table . '_' . $references_field . '_fk';
+
+        $this->sql = "ALTER TABLE $foreign_table DROP FOREIGN KEY " . $constraint . ";";
+        $this->sql .= "\nALTER TABLE $foreign_table DROP INDEX $constraint ;";
     }
 
 
