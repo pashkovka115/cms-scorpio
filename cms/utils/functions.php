@@ -1,20 +1,29 @@
 <?php
-function redirect($url){
+function writeLog(string $data)
+{
+    $prefix = '[ ' . date('d.m.Y H:i:s') . ' ] ';
+    file_put_contents(base_path() . '/logs/DB.txt', $prefix . $data . "\n===========\n", FILE_APPEND);
+}
+
+function redirect($url)
+{
     header('Location: ' . $url);
     exit();
 }
+
 function d(...$data)
 {
     echo '<pre>';
-    foreach ($data as $datum){
+    foreach ($data as $datum) {
         print_r($datum);
     }
     echo '</pre>';
 }
+
 function dd(...$data)
 {
     echo '<pre>';
-    foreach ($data as $datum){
+    foreach ($data as $datum) {
         print_r($datum);
     }
     echo '</pre>';
@@ -43,7 +52,9 @@ function conf(string $key = '', string $dir = 'conf', $sep = DIRECTORY_SEPARATOR
         $path = base_path() . $sep . $dir . $sep . $sp[0] . '.php';
         $file = require $path;
         foreach ($sp as $k => $val) {
-            if ($k == 0) continue;
+            if ($k == 0) {
+                continue;
+            }
             $file = $file[$val];
         }
         return $file;
@@ -51,7 +62,8 @@ function conf(string $key = '', string $dir = 'conf', $sep = DIRECTORY_SEPARATOR
     return false;
 }
 
-function status_code(int $code, $redirect = true){
+function status_code(int $code, $redirect = true)
+{
     switch ($code) {
         case 100:
             $text = 'Continue';
@@ -168,9 +180,9 @@ function status_code(int $code, $redirect = true){
     $protocol = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0');
     header($protocol . ' ' . $code . ' ' . $text);
 
-    if ($redirect){
+    if ($redirect) {
         $file = base_path() . "/errors/$code.php";
-        if (file_exists($file)){
+        if (file_exists($file)) {
             require $file;
         }
     }
